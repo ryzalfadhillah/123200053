@@ -7,6 +7,11 @@ include 'koneksi.php';
 
 if ($_SESSION['login'] != true)
     header("Location: login.php?");
+
+$kode = $_GET['kode'];
+
+$ambil = mysqli_query($conn, "SELECT * FROM inventaris WHERE kode_barang='$kode'");
+$result = mysqli_fetch_all($ambil, MYSQLI_ASSOC);
 ?>
 
 <head>
@@ -43,35 +48,35 @@ if ($_SESSION['login'] != true)
                     Edit Data Inventaris
                 </div>
                 <div class="card-body">
-                    <form action="#" method="post">
+                    <form action="" method="post">
                         <div class="mb-3 row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Kode Barang</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="kode-barang" placeholder="Kode Barang">
+                                <input type="text" class="form-control" name="kode-barang" value="<?php echo $result[0]['kode_barang'] ?>" placeholder=" Kode Barang">
                             </div>
                         </div>
                         <div class="mb-3 row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Nama Barang</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="nama-barang" placeholder="Nama Barang">
+                                <input type="text" class="form-control" name="nama-barang" value="<?php echo $result[0]['nama_barang'] ?>" placeholder="Nama Barang">
                             </div>
                         </div>
                         <div class="mb-3 row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Jumlah</label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" name="jumlah" placeholder="Jumlah">
+                                <input type="text" class="form-control" name="jumlah" value="<?php echo $result[0]['jumlah'] ?>" placeholder="Jumlah">
                             </div>
                         </div>
                         <div class="mb-3 row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Satuan</label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" name="satuan" placeholder="Satuan">
+                                <input type="text" class="form-control" name="satuan" value="<?php echo $result[0]['satuan'] ?>" placeholder="Satuan">
                             </div>
                         </div>
                         <div class="mb-3 row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Tanggal Datang</label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" name="tanggal-datang" placeholder="Tanggal Datang">
+                                <input type="date" class="form-control" name="tanggal-datang" value="<?php echo $result[0]['tgl_datang'] ?>" placeholder="Tanggal Datang">
                             </div>
                         </div>
                         <div class="mb-3 row">
@@ -105,14 +110,44 @@ if ($_SESSION['login'] != true)
                         <div class="mb-3 row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Harga Satuan</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="harga-satuan" placeholder="Harga Satuan">
+                                <input type="text" class="form-control" name="harga-satuan" value="<?php echo $result[0]['harga'] ?>" placeholder="Harga Satuan">
                             </div>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-logout" name="tambah" style="color: white;">Tambah</button>
+                            <button type="submit" class="btn btn-logout" name="edit" style="color: white;">Edit</button>
                             <button type="reset" class="btn btn-logout" name="reset"><a href="daftar_inventaris.php" style="color: white;">Batal</a></button>
                         </div>
                     </form>
+                    <?php
+
+                    if (isset($_POST['edit'])) {
+                        $kode_barang = $_POST['kode-barang'];
+                        $nama_barang = $_POST['nama-barang'];
+                        $jumlah = $_POST['jumlah'];
+                        $satuan = $_POST['satuan'];
+                        $tanggal_datang = $_POST['tanggal-datang'];
+                        $kategori = $_POST['kategori'];
+                        $status = $_POST['status'];
+                        $harga_satuan = $_POST['harga-satuan'];
+
+                        $edit = mysqli_query($conn, "UPDATE inventaris SET
+                                            kode_barang='$kode_barang',
+                                            nama_barang='$nama_barang',
+                                            jumlah='$jumlah',
+                                            satuan='$satuan',
+                                            tgl_datang='$tanggal_datang',
+                                            kategori='$kategori',
+                                            status_barang='$status',
+                                            harga='$harga_satuan'
+                                            WHERE kode_barang='$kode';");
+
+                        if ($edit) {
+                            echo '<script>window.location="daftar_inventaris.php"</script>';
+                        } else {
+                            echo "Maaf, terjadi kesalahan saat mencobaedit data ke database";
+                        }
+                    }
+                    ?>
                 </div>
             </div>
         </div>

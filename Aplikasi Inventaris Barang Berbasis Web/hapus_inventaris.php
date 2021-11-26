@@ -49,13 +49,7 @@ $kode_barang = $_GET['kode'];
                         <div class="row">
                             <form action="#" method="post">
                                 <div class="col-12 text-center">
-                                    <h5>Yakin ingin menghapus?
-                                        <?php
-                                        $query = mysqli_query($conn, "SELECT * FROM inventaris WHERE kode_barang='$kode_barang'");
-                                        $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
-                                        ?>
-                                        <?php echo $result['nama_barang'] ?>
-                                    </h5>
+                                    <h5>Yakin ingin menghapus?</h5>
                                 </div>
                                 <br>
                                 <div class="text-center">
